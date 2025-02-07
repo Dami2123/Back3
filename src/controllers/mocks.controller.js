@@ -16,8 +16,8 @@ const getGeneratedUsers = async(req,res)=>{
 }
 
 const postGeneratePets = async(req,res)=>{
-    const pets= await generateUsers(parseInt(req.params.number), 'insert')
-
+    const pets= await generatePets(parseInt(req.params.number), 'insert')
+    let result=false
     for (let i = 0; i < pets.length; i++) {
         result = await petsService.create(pets[i]); 
         if(!result){

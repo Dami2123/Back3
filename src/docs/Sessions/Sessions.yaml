@@ -1,0 +1,123 @@
+paths:
+  /api/sessions/register:
+    post:
+      summary: Registra un nuevo usuario.
+      tags:
+        - Sessions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/requestBodies/registerUser'
+      responses:
+        "201":
+          description: Usuario registrado exitosamente.
+        "400":
+          description: Se enviaron valores incompletos o el usuario ya existe.
+        "500":
+          description: Error inesperado del servidor.
+
+  /api/sessions/login:
+    post:
+      summary: Inicia sesión de usuario.
+      tags:
+        - Sessions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/requestBodies/loginUser'
+      responses:
+        "200":
+          description: Inicio de sesión exitoso.
+        "400":
+          description: Valores incompletos o contraseña incorrecta.
+        "404":
+          description: Usuario no encontrado.
+        "500":
+          description: Error inesperado del servidor.
+
+  /api/sessions/current:
+    get:
+      summary: Obtiene la información del usuario autenticado.
+      tags:
+        - Sessions
+      responses:
+        "200":
+          description: Información del usuario obtenida exitosamente.
+        "401":
+          description: No autorizado, token inválido o expirado.
+        "500":
+          description: Error inesperado del servidor.
+
+  /api/sessions/unprotectedLogin:
+    get:
+      summary: Inicia sesión sin protección de DTO.
+      tags:
+        - Sessions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/requestBodies/loginUser'
+      responses:
+        "200":
+          description: Inicio de sesión sin protección exitoso.
+        "400":
+          description: Valores incompletos o contraseña incorrecta.
+        "404":
+          description: Usuario no encontrado.
+        "500":
+          description: Error inesperado del servidor.
+
+  /api/sessions/unprotectedCurrent:
+    get:
+      summary: Obtiene la información del usuario autenticado sin protección de DTO.
+      tags:
+        - Sessions
+      responses:
+        "200":
+          description: Información del usuario obtenida exitosamente.
+        "401":
+          description: No autorizado, token inválido o expirado.
+        "500":
+          description: Error inesperado del servidor.
+
+components:
+  requestBodies:
+    registerUser:
+      type: object
+      properties:
+        first_name:
+          type: string
+          description: Nombre del usuario.
+        last_name:
+          type: string
+          description: Apellido del usuario.
+        email:
+          type: string
+          description: Correo electrónico del usuario.
+        password:
+          type: string
+          description: Contraseña del usuario.
+      example:
+        first_name: "Juan"
+        last_name: "Pérez"
+        email: "juan.perez@example.com"
+        password: "securePassword123"
+
+    loginUser:
+      type: object
+      properties:
+        email:
+          type: string
+          description: Correo electrónico del usuario.
+        password:
+          type: string
+          description: Contraseña del usuario.
+      example:
+        email: "juan.perez@example.com"
+        password: "securePassword123"

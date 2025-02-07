@@ -5,6 +5,13 @@ const getAllUsers = async(req,res)=>{
     res.send({status:"success",payload:users})
 }
 
+const createUser = async(req,res)=> {
+    const {first_name,last_name,email,password} = req.body;
+    if(!first_name||!last_name||!email||!password) return res.status(400).send({status:"error",error:"Incomplete values"})
+    const result = await usersService.create({first_name,last_name,email,password});
+    res.send({status:"success",payload:result})
+}
+
 const getUser = async(req,res)=> {
     const userId = req.params.uid;
     const user = await usersService.getUserById(userId);
@@ -23,7 +30,7 @@ const updateUser =async(req,res)=>{
 
 const deleteUser = async(req,res) =>{
     const userId = req.params.uid;
-    const result = await usersService.getUserById(userId);
+    const result = await usersService.delete(userId);
     res.send({status:"success",message:"User deleted"})
 }
 
@@ -31,5 +38,6 @@ export default {
     deleteUser,
     getAllUsers,
     getUser,
-    updateUser
+    updateUser,
+    createUser
 }

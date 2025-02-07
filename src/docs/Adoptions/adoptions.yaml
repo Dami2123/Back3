@@ -1,0 +1,94 @@
+paths:
+  /api/adoptions/:
+    get:
+      summary: Obtiene todas las adopciones registradas en la aplicación web.
+      tags:
+        - Adoptions
+      responses:
+        "200":
+          description: La operación fue exitosa, se retorna un arreglo con las adopciones registradas.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Adoption'
+        "400":
+          description: Se envió un dato no esperado.
+        "500":
+          description: Error inesperado del servidor, no se puede manejar la solicitud.
+
+  /api/adoptions/{aid}:
+    get:
+      summary: Obtiene la información de una adopción por ID.
+      tags:
+        - Adoptions
+      parameters:
+        - name: aid
+          in: path
+          required: true
+          description: Ingresar el ID de la adopción a buscar.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: La operación fue exitosa, se retorna la información de la adopción.
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Adoption'
+        "400":
+          description: Se envió un dato no esperado.
+        "404":
+          description: Adopción no encontrada.
+        "500":
+          description: Error inesperado del servidor, no se puede manejar la solicitud.
+
+  /api/adoptions/{uid}/{pid}:
+    post:
+      summary: Registra una nueva adopción.
+      tags:
+        - Adoptions
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          description: Ingresar ID del usuario que adopta.
+          schema:
+            type: string
+        - name: pid
+          in: path
+          required: true
+          description: Ingresar ID de la mascota adoptada.
+          schema:
+            type: string
+      responses:
+        "201":
+          description: Adopción registrada exitosamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Adoption'
+        "400":
+          description: Se envió un dato no esperado.
+        "500":
+          description: Error inesperado del servidor, no se puede manejar la solicitud.
+
+components:
+  schemas:
+    Adoption:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: ID autogenerado de Mongo.
+        owner:
+          type: ObjectId
+          description: ID del usuario que adoptó la mascota.
+        pet:
+          type: ObjectId
+          description: ID de la mascota adoptada.
+      example:
+        _id: "647fa8c9e46dbc5a20320181"
+        owner: "647fa8c9e46dbc5a20320182"
+        pet: "647fa8c9e46dbc5a20320183"
